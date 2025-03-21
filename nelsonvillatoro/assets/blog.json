@@ -1,0 +1,28 @@
+{
+    "posts": [
+      {
+        "id": 1,
+        "title": "Getting Started with My New Website",
+        "slug": "getting-started-with-my-new-website",
+        "date": "2024-02-11",
+        "author": "Nelson Villatoro",
+        "category": "Web Development",
+        "tags": ["website", "development", "introduction"],
+        "excerpt": "The journey of building my personal website and what technologies I'm using.",
+        "featured_image": "assets/images/blog/website-launch.jpg",
+        "content": "<p>Welcome to my new website! I'm excited to share my journey in software development and AI with you all.</p><p>This website is built using modern web technologies, focusing on performance, accessibility, and user experience. I've implemented a dynamic blog system that will allow me to regularly share insights about:</p><ul><li>AI and Machine Learning developments</li><li>Software engineering best practices</li><li>My academic journey in Computer Science</li><li>Projects I'm working on</li></ul><p>Stay tuned for regular updates!</p>"
+      },
+      {
+        "id": 2,
+        "title": "The Future of AI in Everyday Applications",
+        "slug": "future-of-ai-in-everyday-applications",
+        "date": "2024-02-11",
+        "author": "Nelson Villatoro",
+        "category": "Artificial Intelligence",
+        "tags": ["AI", "technology", "future"],
+        "excerpt": "How AI is transforming the apps and services we use daily, and what's coming next.",
+        "featured_image": "assets/images/blog/ai-future.jpg",
+        "content": "<p>Artificial Intelligence has rapidly evolved from a scientific curiosity to a technology that powers many of our daily interactions with digital services.</p><p>From voice assistants to recommendation systems, AI is now embedded in countless applications we use every day. In this post, I explore some of the most interesting developments in practical AI applications and what we might expect in the near future.</p><p>As I continue my studies in Computer Science, I'm particularly interested in how machine learning models can be optimized for embedded systems and mobile applications, bringing AI capabilities to more devices with limited resources.</p>"
+      }
+    ]
+  }

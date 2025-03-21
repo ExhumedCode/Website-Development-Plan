@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Blog Management</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Custom Admin CSS -->
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary-color: #0f172a;
+        --text-color: #1e293b;
+        --text-light: #64748b;
+        --bg-color: #f8fafc;
+        --bg-accent: #f1f5f9;
+        --border-color: #e2e8f0;
+        --card-bg: #ffffff;
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 2rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Playfair Display", serif;
+        color: var(--secondary-color);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .admin-container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 1rem;
+      }
+
+      .btn.primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .btn.primary:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .btn.secondary {
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+      }
+
+      .btn.secondary:hover {
+        background-color: rgba(37, 99, 235, 0.1);
+      }
+
+      .btn.danger {
+        background-color: var(--danger);
+        color: white;
+      }
+
+      .btn.danger:hover {
+        background-color: #dc2626;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.375rem;
+        font-size: 1rem;
+        font-family: "Inter", sans-serif;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      textarea {
+        min-height: 200px;
+        resize: vertical;
+      }
+
+      .tag-input-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--bg-accent);
+        color: var(--text-color);
+        border-radius: 2rem;
+        padding: 0.35rem 0.8rem;
+        font-size: 0.85rem;
+      }
+
+      .tag-remove {
+        margin-left: 0.35rem;
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 1.2rem;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0.7;
+      }
+
+      .tag-remove:hover {
+        opacity: 1;
+      }
+
+      .input-with-button {
+        display: flex;
+      }
+
+      .input-with-button input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .input-with-button button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      #content-editor {
+        border: 1px solid var(--border-color);
+        border-radius: 0.375rem;
+        padding: 1rem;
+        min-height: 300px;
+        margin-bottom: 1rem;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .toolbar button {
+        background-color: var(--bg-accent);
+        border: none;
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .toolbar button:hover {
+        background-color: var(--border-color);
+      }
+
+      .result-box {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: var(--bg-accent);
+        border-radius: 0.375rem;
+        display: none;
+      }
+
+      .success {
+        border-left: 4px solid var(--success);
+        background-color: rgba(16, 185, 129, 0.1);
+      }
+
+      .error {
+        border-left: 4px solid var(--danger);
+        background-color: rgba(239, 68, 68, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-container">
+      <div class="admin-header">
+        <h1>Blog Management</h1>
+        <a href="index.html" class="btn secondary">
+          <i class="fas fa-arrow-left"></i> Back to Site
+        </a>
+      </div>
+
+      <div class="card">
+        <h2>Create New Blog Post</h2>
+
+        <form id="blog-form">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required />
+          </div>
+
+          <div class="form-group">
+            <label for="slug">Slug (URL-friendly version of title)</label>
+            <input type="text" id="slug" name="slug" required />
+          </div>
+
+          <div class="form-group">
+            <label for="excerpt">Excerpt (Short summary)</label>
+            <textarea id="excerpt" name="excerpt" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option value="">Select a category</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Artificial Intelligence">
+                Artificial Intelligence
+              </option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Embedded Systems">Embedded Systems</option>
+              <option value="Personal">Personal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tag-input">Tags</label>
+            <div class="input-with-button">
+              <input
+                type="text"
+                id="tag-input"
+                placeholder="Add a tag and press Enter or Add"
+              />
+              <button type="button" id="add-tag" class="btn primary">
+                Add
+              </button>
+            </div>
+            <div id="tags-container" class="tag-input-container"></div>
+            <input type="hidden" id="tags" name="tags" />
+          </div>
+
+          <div class="form-group">
+            <label>Content</label>
+            <div class="toolbar">
+              <button type="button" data-command="bold" title="Bold">
+                <i class="fas fa-bold"></i>
+              </button>
+              <button type="button" data-command="italic" title="Italic">
+                <i class="fas fa-italic"></i>
+              </button>
+              <button
+                type="button"
+                data-command="insertUnorderedList"
+                title="Bullet List"
+              >
+                <i class="fas fa-list-ul"></i>
+              </button>
+              <button
+                type="button"
+                data-command="insertOrderedList"
+                title="Numbered List"
+              >
+                <i class="fas fa-list-ol"></i>
+              </button>
+              <button type="button" data-command="createLink" title="Link">
+                <i class="fas fa-link"></i>
+              </button>
+              <button
+                type="button"
+                data-command="formatBlock"
+                data-value="H2"
+                title="Heading"
+              >
+                <i class="fas fa-heading"></i>
+              </button>
+              <button
+                type="button"
+                data-command="formatBlock"
+                data-value="P"
+                title="Paragraph"
+              >
+                <i class="fas fa-paragraph"></i>
+              </button>
+            </div>
+            <div id="content-editor" contenteditable="true"></div>
+            <textarea
+              id="content"
+              name="content"
+              style="display: none"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="featured-image">Featured Image URL</label>
+            <input
+              type="text"
+              id="featured-image"
+              name="featured_image"
+              placeholder="assets/images/blog/your-image.jpg"
+            />
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn primary">Save Blog Post</button>
+            <button type="button" id="preview-btn" class="btn secondary">
+              Preview
+            </button>
+          </div>
+        </form>
+
+        <div id="result" class="result-box"></div>
+      </div>
+
+      <div class="card">
+        <h2>How to Use This Form</h2>
+        <p>
+          This form helps you create new blog posts for your website. Follow
+          these steps:
+        </p>
+        <ol>
+          <li>Fill in all the required fields</li>
+          <li>Use the rich text editor to format your content</li>
+          <li>Add tags relevant to your post</li>
+          <li>Click "Save Blog Post" to generate the JSON</li>
+          <li>
+            Copy the generated JSON and add it to your
+            <code>blog.json</code> file
+          </li>
+        </ol>
+        <p>
+          To create a featured image, add the image to the
+          <code>assets/images/blog/</code> directory and reference it in the
+          Featured Image field.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Handle the rich text editor toolbar
+        const toolbar = document.querySelectorAll(".toolbar button");
+        const editor = document.getElementById("content-editor");
+        const contentTextarea = document.getElementById("content");
+
+        toolbar.forEach((button) => {
+          button.addEventListener("click", function () {
+            const command = this.dataset.command;
+
+            if (command === "createLink") {
+              const url = prompt("Enter the link URL:");
+              if (url) document.execCommand(command, false, url);
+            } else if (this.dataset.value) {
+              document.execCommand(command, false, this.dataset.value);
+            } else {
+              document.execCommand(command, false, null);
+            }
+
+            // Update hidden textarea with HTML content
+            contentTextarea.value = editor.innerHTML;
+          });
+        });
+
+        // Update content when typing in the editor
+        editor.addEventListener("input", function () {
+          contentTextarea.value = editor.innerHTML;
+        });
+
+        // Auto-generate slug from title
+        const titleInput = document.getElementById("title");
+        const slugInput = document.getElementById("slug");
+
+        titleInput.addEventListener("blur", function () {
+          if (slugInput.value === "") {
+            slugInput.value = titleInput.value
+              .toLowerCase()
+              .replace(/[^\w\s-]/g, "")
+              .replace(/\s+/g, "-");
+          }
+        });
+
+        // Handle tags
+        const tagInput = document.getElementById("tag-input");
+        const addTagBtn = document.getElementById("add-tag");
+        const tagsContainer = document.getElementById("tags-container");
+        const tagsHiddenInput = document.getElementById("tags");
+        let tags = [];
+
+        function updateTags() {
+          tagsContainer.innerHTML = "";
+          tags.forEach((tag) => {
+            const tagElement = document.createElement("span");
+            tagElement.classList.add("tag");
+            tagElement.innerHTML = `${tag} <button type="button" class="tag-remove" data-tag="${tag}">×</button>`;
+            tagsContainer.appendChild(tagElement);
+          });
+
+          tagsHiddenInput.value = JSON.stringify(tags);
+        }
+
+        function addTag() {
+          const tag = tagInput.value.trim();
+          if (tag && !tags.includes(tag)) {
+            tags.push(tag);
+            updateTags();
+            tagInput.value = "";
+          }
+        }
+
+        addTagBtn.addEventListener("click", addTag);
+
+        tagInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addTag();
+          }
+        });
+
+        tagsContainer.addEventListener("click", function (e) {
+          if (e.target.classList.contains("tag-remove")) {
+            const tag = e.target.dataset.tag;
+            tags = tags.filter((t) => t !== tag);
+            updateTags();
+          }
+        });
+
+        // Handle form submission
+        const blogForm = document.getElementById("blog-form");
+        const resultBox = document.getElementById("result");
+
+        blogForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get current date
+          const date = new Date().toISOString().split("T")[0];
+
+          // Create blog post object
+          const blogPost = {
+            id: Date.now(), // Use timestamp as ID
+            title: document.getElementById("title").value,
+            slug: document.getElementById("slug").value,
+            date: date,
+            author: "Nelson Villatoro",
+            category: document.getElementById("category").value,
+            tags: JSON.parse(document.getElementById("tags").value || "[]"),
+            excerpt: document.getElementById("excerpt").value,
+            featured_image:
+              document.getElementById("featured-image").value ||
+              "assets/images/blog/default.jpg",
+            content: document.getElementById("content").value,
+          };
+
+          // Show the JSON output
+          resultBox.style.display = "block";
+          resultBox.classList.add("success");
+          resultBox.innerHTML = `
+                    <h3>Blog Post JSON Created Successfully!</h3>
+                    <p>Copy the JSON below and add it to your blog.json file:</p>
+                    <pre style="background: #f5f5f5; padding: 1rem; overflow: auto;">${JSON.stringify(
+                      blogPost,
+                      null,
+                      2
+                    )}</pre>
+                `;
+
+          // Scroll to result
+          resultBox.scrollIntoView({ behavior: "smooth" });
+        });
+
+        // Preview button
+        document
+          .getElementById("preview-btn")
+          .addEventListener("click", function () {
+            const contentPreview =
+              document.getElementById("content-editor").innerHTML;
+            const previewWindow = window.open("", "_blank");
+            previewWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Preview: ${
+                          document.getElementById("title").value
+                        }</title>
+                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+                        <style>
+                            body {
+                                font-family: 'Inter', sans-serif;
+                                max-width: 800px;
+                                margin: 0 auto;
+                                padding: 2rem;
+                                line-height: 1.6;
+                                color: #1e293b;
+                            }
+                            h1, h2, h3, h4, h5, h6 {
+                                font-family: 'Playfair Display', serif;
+                                color: #0f172a;
+                            }
+                            a {
+                                color: #2563eb;
+                            }
+                            .header {
+                                margin-bottom: 2rem;
+                                padding-bottom: 1rem;
+                                border-bottom: 1px solid #e2e8f0;
+                            }
+                            .preview-note {
+                                background-color: #fffbeb;
+                                border-left: 4px solid #f59e0b;
+                                padding: 1rem;
+                                margin-bottom: 2rem;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="preview-note">
+                            <strong>Preview Mode:</strong> This is a preview of your blog post. Content may appear differently on your actual website.
+                        </div>
+                        <div class="header">
+                            <h1>${document.getElementById("title").value}</h1>
+                            <div>
+                                <strong>Category:</strong> ${
+                                  document.getElementById("category").value
+                                } | 
+                                <strong>Tags:</strong> ${JSON.parse(
+                                  document.getElementById("tags").value || "[]"
+                                ).join(", ")}
+                            </div>
+                        </div>
+                        <div class="content">
+                            ${contentPreview}
+                        </div>
+                    </body>
+                    </html>
+                `);
+            previewWindow.document.close();
+          });
+      });
+    </script>
+  </body>
+</html>
